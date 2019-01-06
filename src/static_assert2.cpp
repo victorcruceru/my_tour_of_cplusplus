@@ -10,7 +10,7 @@ struct Record { // struct is just a class with all members public
 };
 
 int main(){
-  Record<std::string, 0> failed_rec; // This fails at compile time
+  //Record<std::string, 0> failed_rec; // This fails at compile time
   Record<int, 10> ok_rec;            // This is OK.
   // Next two might fail or not at compile time depending on your machine
   static_assert(sizeof(int) == 4, "int type must be of size 4");
