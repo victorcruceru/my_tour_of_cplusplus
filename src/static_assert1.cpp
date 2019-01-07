@@ -1,3 +1,17 @@
+/*
+ * ----------------------------------------------------------------------------
+ * "THE BEER-WARE LICENSE" (Revision 42):
+ * Victor Cruceru wrote this file. As long as you retain this notice you
+ * can do whatever you want with this stuff. If we meet some day, and you think
+ * this stuff is worth it, you can buy me a beer in return.
+ * ----------------------------------------------------------------------------
+ */
+
+/*
+ * Description: Trying static_assert (compile time check) in various
+ * scenarios. These examples cover C++ type traits like std::is_copy_assignable
+ * which are available at compile time as well.
+ */
 #include <iostream>
 #include <cstdlib>
 #include <string>

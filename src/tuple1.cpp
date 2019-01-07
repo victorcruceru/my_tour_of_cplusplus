@@ -1,3 +1,15 @@
+/*
+ * ----------------------------------------------------------------------------
+ * "THE BEER-WARE LICENSE" (Revision 42):
+ * Victor Cruceru wrote this file. As long as you retain this notice you
+ * can do whatever you want with this stuff. If we meet some day, and you think
+ * this stuff is worth it, you can buy me a beer in return.
+ * ----------------------------------------------------------------------------
+ */
+
+/*
+ * Description: Tuple construction via std::make_tuple or via tuple constructor
+ */
 #include <iostream>
 #include <cstdlib>
 #include <string>
@@ -24,7 +36,7 @@ int main(){
   std::tie(s, std::ignore) = ShiftTuple({1, "tuple#1", 64});
   std::cout << s << std::endl;
 
-  std::tie(s, std::ignore) = ShiftTuple({1, "tuple#2", 128});
+  std::tie(s, std::ignore) = ShiftTuple2({1, "tuple#2", 128});
   std::cout << s << std::endl;
 
   return (EXIT_SUCCESS);

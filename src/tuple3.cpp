@@ -30,6 +30,7 @@ get_stock(const std::string& s_symbol){
 int main(int argc, char** argv){
   std::srand(std::time(nullptr)); 
   for (int n : {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}){
+    // unpacking the tuple returned by local function get_stock
     const auto [name, valid_time, price] = get_stock("AMZN" + 
                                                      std::to_string(n));
     std::cout<<name<<", "<< std::chrono::system_clock::to_time_t(valid_time) 
