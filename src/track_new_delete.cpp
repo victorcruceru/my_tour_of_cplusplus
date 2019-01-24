@@ -6,14 +6,20 @@
  * this stuff is worth it, you can buy me a beer in return.
  * ----------------------------------------------------------------------------
  */
-#include "track_new_delete.hpp"
+
 #include <cstdlib>
 #include <string>
+#include "track_new_delete.hpp"
+struct Dummy {
+  uint32_t d1;
+  uint64_t d2;
+};
 int main(){
-  AllocHelper::set_tracing(false);
+  AllocHelper::set_tracing(true);
   char* x1 = ::new char;
   double* x2 = ::new double;
   std::uint64_t* x3 = ::new std::uint64_t[10];
+  Dummy* d = new Dummy;
 
   std::cout << "::new counter = " << AllocHelper::get_new_count() 
             << ", ::delete counter = " << AllocHelper::get_delete_count() 
@@ -22,6 +28,8 @@ int main(){
   
   ::delete x1;
   ::delete x2;
+  ::delete [] x3;
+  ::delete d;
   std::cout << "::new counter = " << AllocHelper::get_new_count() 
             << ", ::delete counter = " << AllocHelper::get_delete_count() 
             << ", total bytes allocated = " << AllocHelper::get_total_bytes() 

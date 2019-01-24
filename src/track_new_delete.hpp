@@ -126,7 +126,7 @@ inline void* operator new[](std::size_t sz){
 }
 
 // overloading  global delete operator
-inline void operator delete(void* ptr) noexcept{
+inline void operator delete (void* ptr) noexcept{
   std::printf( "operator delete for addr %x\n", ptr);    
   return AllocHelper::deallocate_h(ptr, "::delete");
 }
