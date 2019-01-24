@@ -15,7 +15,7 @@ struct Dummy {
   uint64_t d2;
 };
 int main(){
-  AllocHelper::set_tracing(false);
+  AllocHelper::set_tracing(true);
   char* x1 = ::new char;
   double* x2 = ::new double;
   std::uint64_t* x3 = ::new std::uint64_t[10];

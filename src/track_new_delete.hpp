@@ -117,38 +117,38 @@ class AllocHelper{
     }
 };
 
-// overloading global new operator
+// replacing (overloading) global new operator
 inline void* operator new(std::size_t sz){
-  std::printf("operator new size  %zu\n", sz);    
+  //std::printf("operator new size  %zu\n", sz);    
   return AllocHelper::allocate_h(sz, "::new");
 }
 
-// overloading global new[] operator
+// replacing (overloading) global new[] operator
 inline void* operator new[](std::size_t sz){
-  std::printf("operator new[] size  %zu\n", sz);
+  //std::printf("operator new[] size  %zu\n", sz);
   return AllocHelper::allocate_h(sz, "::new[]");
 }
 
-// overloading  global delete operator
+// replacing (overloading)  global delete operator
 inline void operator delete (void* ptr) noexcept{
-  std::printf( "operator delete for addr 0x%x\n", ptr);    
+  //std::printf( "operator delete for addr 0x%x\n", ptr);    
   return AllocHelper::deallocate_h(ptr, "::delete");
 }
 
-// overloading  global delete operator
+// replacing (overloading)  global delete operator
 inline void operator delete (void* ptr, std::size_t sz) noexcept{
-  std::printf( "operator delete for addr 0x%x, size %zu\n", ptr, sz);    
+  //std::printf( "operator delete for addr 0x%x, size %zu\n", ptr, sz);    
   return AllocHelper::deallocate_h(ptr, "::delete");
 }
 
-// overloading  global delete operator
+// replacing (overloading)  global delete operator
 inline void operator delete[](void* ptr) noexcept{
-  std::printf( "operator delete[] for addr. %x\n", ptr);    
+  //std::printf( "operator delete[] for addr. %x\n", ptr);    
   return AllocHelper::deallocate_h(ptr, "::delete[]");
 }
 
-// overloading  global delete operator
+// replacing (overloading) global delete operator
 inline void operator delete[](void* ptr, std::size_t sz) noexcept{
-  std::printf( "operator delete[] for addr 0x%x, size %zu\n", ptr, sz);      
+  //std::printf( "operator delete[] for addr 0x%x, size %zu\n", ptr, sz);      
   return AllocHelper::deallocate_h(ptr, "::delete[]");
 }

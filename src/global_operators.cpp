@@ -11,19 +11,19 @@
 #include <string>
 #include <iostream>
 
-// overloading global new operator
+// replacing (overloading) global new operator
  void* operator new(std::size_t sz){
   std::printf("operator new size  %zu\n", sz);    
   return std::malloc(sz);
 }
 
-// overloading global new[] operator
+// replacing (overloading) global new[] operator
 void* operator new[](std::size_t sz){
   std::printf("operator new[] size  %zu\n", sz);
   return std::malloc(sz);
 }
 
-// overloading  global delete operator
+// replacing (overloading)  global delete operator
 void operator delete (void* ptr) noexcept {
   std::printf( "operator delete for addr %x\n", ptr);    
   return std::free(ptr);
@@ -34,7 +34,7 @@ void operator delete (void* ptr, std::size_t sz) noexcept {
   return std::free(ptr);
 }
 
-// overloading  global delete operator
+// replacing (overloading)  global delete operator
 void operator delete[](void* ptr) noexcept{
   std::printf( "operator delete[] for addr. %x\n", ptr);    
   return std::free(ptr);
