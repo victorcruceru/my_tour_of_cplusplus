@@ -15,7 +15,7 @@ struct Dummy {
   uint64_t d2;
 };
 int main(){
-  AllocHelper::set_tracing(true);
+  AllocHelper::set_tracing(false);
   char* x1 = ::new char;
   double* x2 = ::new double;
   std::uint64_t* x3 = ::new std::uint64_t[10];
@@ -29,11 +29,12 @@ int main(){
   ::delete x1;
   ::delete x2;
   ::delete [] x3;
-  ::delete d;
+  //::delete d;
   std::cout << "::new counter = " << AllocHelper::get_new_count() 
             << ", ::delete counter = " << AllocHelper::get_delete_count() 
             << ", total bytes allocated = " << AllocHelper::get_total_bytes() 
             << std::endl;
-
+  std::cout << "Number of *leaks* = " << AllocHelper::get_leaks_count() 
+            << std::endl;
   return (EXIT_SUCCESS);
 }

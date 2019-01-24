@@ -10,3 +10,5 @@ add_executable(tuple2  tuple2.cpp)
 add_executable(tuple3  tuple3.cpp)
 
 add_executable(track_new_delete  track_new_delete.cpp)
+
+add_executable(global_operators  global_operators.cpp)

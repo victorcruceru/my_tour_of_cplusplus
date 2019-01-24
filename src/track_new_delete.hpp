@@ -82,6 +82,10 @@ class AllocHelper{
       return (AllocHelper::total_bytes);
     }    
 
+    static std::size_t get_leaks_count(void){
+      return (AllocHelper::addr_map.size());
+    } 
+
     static void* allocate_h(std::size_t sz, const char* msg){
       if (AllocHelper::do_trace){
         std::printf ("Allocating %zu bytes, %s\n",  sz, msg);
@@ -98,7 +102,7 @@ class AllocHelper{
 
     static void deallocate_h(void* ptr, const char* msg){
       if (AllocHelper::do_trace){
-        std::printf("Deallocating  address %x, %s\n", ptr, msg );
+        std::printf("Deallocating  address 0x%x, %s\n", ptr, msg);
       }
       std::map<void*, std::size_t>::iterator m_it =  
                                     AllocHelper::addr_map.find(ptr);
@@ -108,7 +112,7 @@ class AllocHelper{
         AllocHelper::addr_map.erase(m_it);
         std::free(ptr);
       } else {
-        std::printf ("Address %x  not recorded, , %s\n", ptr, msg);        
+        std::printf ("Address 0x%x  not recorded,  %s\n", ptr, msg);        
       }
     }
 };
@@ -127,12 +131,24 @@ inline void* operator new[](std::size_t sz){
 
 // overloading  global delete operator
 inline void operator delete (void* ptr) noexcept{
-  std::printf( "operator delete for addr %x\n", ptr);    
+  std::printf( "operator delete for addr 0x%x\n", ptr);    
+  return AllocHelper::deallocate_h(ptr, "::delete");
+}
+
+// overloading  global delete operator
+inline void operator delete (void* ptr, std::size_t sz) noexcept{
+  std::printf( "operator delete for addr 0x%x, size %zu\n", ptr, sz);    
   return AllocHelper::deallocate_h(ptr, "::delete");
 }
 
 // overloading  global delete operator
 inline void operator delete[](void* ptr) noexcept{
   std::printf( "operator delete[] for addr. %x\n", ptr);    
+  return AllocHelper::deallocate_h(ptr, "::delete[]");
+}
+
+// overloading  global delete operator
+inline void operator delete[](void* ptr, std::size_t sz) noexcept{
+  std::printf( "operator delete[] for addr 0x%x, size %zu\n", ptr, sz);      
   return AllocHelper::deallocate_h(ptr, "::delete[]");
 }
