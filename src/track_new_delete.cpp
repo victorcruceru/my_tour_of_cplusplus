@@ -17,9 +17,9 @@
 
 // Dummy class used to check replaced new/ delete on a real class instance 
 struct Dummy {
-  uint32_t d1;
-  uint64_t d2;
-  Dummy(void): d1{0}, d2{0}{
+  uint32_t d1 = 0;
+  uint64_t d2 = 0;
+  Dummy(void){
     std::cout << "INFO: Dummy Constructor invoked" << std::endl;
   }
   ~Dummy(void){
