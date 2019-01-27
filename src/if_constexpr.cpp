@@ -9,7 +9,7 @@
 
 /*
  * Description: compile time "if constexpr"
- * Inspired 
+ * This is a construct resolved at the compile time.
  */
 #include <type_traits>
 #include <iostream>
