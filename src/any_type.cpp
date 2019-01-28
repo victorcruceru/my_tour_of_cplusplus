@@ -16,6 +16,7 @@
 #include <any>
 #include <map>
 #include <iostream>
+#include <cassert>
 
 
 int main(){
@@ -26,7 +27,7 @@ int main(){
   std::any nothing; 
 
   std::multimap<std::string, std::any> mm {
-    {"fisrt key", "1st value"},
+    {"first key", "1st value"},
     {"second key", 2},
     {"third key", a_double},
     {"third key", other_double},
@@ -48,19 +49,45 @@ int main(){
     }else if (val.type() == typeid(bool)){
       std::cout << std::boolalpha << std::any_cast<bool>(val) << " ( bool )"; 
     }else if (val.type() == typeid(const wchar_t*)){
-      std::wcout << std::any_cast<const wchar_t*>(val); 
+      std::wcout << std::any_cast<const wchar_t*>(val) << " ( const wchar_t* )"; 
     }else if (val.type() == typeid(const char*)){
       std::cout << std::any_cast<const char*>(val) << " ( const char* )"; 
     }else{
        try{
         std::cout << std::any_cast<std::string>(val); 
-       } catch (std::bad_any_cast e){
+       } catch (std::bad_any_cast& e){
          std::cout << e.what();
        }
     }    
 
     std::cout << std::endl;
   }
+  
+  
+  double* double_ptr = std::any_cast<double>(&a_double);
+  std::cout << "Double #1 - from pointer: "<< *double_ptr << std::endl;
+  
+  a_double.reset();
+  assert(!a_double.has_value());
+  
+  a_double = std::string {"An uninteresting C++ string"};
+
+  //dangling pointer
+  std::cout << "Double #2 - from pointer: "<< *double_ptr << std::endl;
+
+  nothing = a_double;
+  assert(nothing.type() == typeid(std::string));
+  std::cout << "nothing value ='" <<std::any_cast<std::string>(nothing) 
+            << "' ( std::string )" << std::endl; 
+
+  nothing.reset();
+
+  if (nothing.type() == typeid(std::string)){
+    std::cout << "nothing value ='" << std::any_cast<std::string>(nothing) 
+              << "' ( std::string )" << std::endl; 
+  }
+  nothing = nullptr;
+  assert(nothing.type() == typeid(std::nullptr_t));
 
   return (EXIT_SUCCESS);
 }
