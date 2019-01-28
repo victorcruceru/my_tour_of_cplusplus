@@ -35,7 +35,7 @@ struct HugeKey {
   std::string hk[1024] = {};
 };
 
-// global operators to comapre any two key, small or huge
+// global operators to comapre any two keys, small or huge
 bool operator<(const HugeKey& huge_k, const SmallKey& small_k) { 
   return (huge_k.sk < small_k); 
 }
