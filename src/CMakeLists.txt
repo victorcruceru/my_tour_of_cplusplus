@@ -16,3 +16,5 @@ add_executable(global_operators  global_operators.cpp)
 add_executable(if_constexpr  if_constexpr.cpp)
 
 add_executable(optional_type  optional_type.cpp)
+
+add_executable(any_type  any_type.cpp)
