@@ -16,6 +16,7 @@
 #include <optional>
 #include <iostream>
 #include <map>
+#include <list>
 #include <cstdlib>
 
 // The smaller key
@@ -27,7 +28,7 @@ struct SmallKey {
 // global operator used in the HugeKey operator
 bool operator < (const SmallKey& key1, const SmallKey& key2){
   return (key1.k1 < key2.k1) or (key1.k1 == key2.k1 and key1.k2 < key2.k2);
-};
+}
 
 // The huge key used in the std:: map incarnation below
 struct HugeKey {
@@ -69,12 +70,13 @@ int main(){
     { {{254, 99999}, {}}, "item3" },
   };
 
-  for ( const auto& item: (SmallKey[]){ 
-                                {1, 1}, 
-                                {100, 7},
-                                {9, 9},
-                                {254, 99999} 
-                              } ){
+  std::list<SmallKey> probe_list = { 
+    {1, 1}, 
+    {100, 7}, 
+    {9, 9}, 
+    {254, 99999} 
+  };
+  for ( const auto& item: probe_list ){
     std::cout << "Searching for combo key ["<< static_cast<uint32_t>(item.k1) 
               <<", "  << item.k2 << "]: ";
     if (auto x = get_first_value(h_map, item); x){

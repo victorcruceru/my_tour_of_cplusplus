@@ -25,23 +25,23 @@ void* operator new[](std::size_t sz){
 
 // replacing (overloading)  global delete operator
 void operator delete (void* ptr) noexcept {
-  std::printf( "operator delete for addr %x\n", ptr);    
+  std::printf( "operator delete for addr %p\n", ptr);    
   return std::free(ptr);
 }
 
 void operator delete (void* ptr, std::size_t sz) noexcept {
-  std::printf( "operator delete2 for addr %x\n", ptr);    
+  std::printf( "operator delete2 for addr %p\n", ptr);    
   return std::free(ptr);
 }
 
 // replacing (overloading)  global delete operator
 void operator delete[](void* ptr) noexcept{
-  std::printf( "operator delete[] for addr. %x\n", ptr);    
+  std::printf( "operator delete[] for addr. %p\n", ptr);    
   return std::free(ptr);
 }
 
 void operator delete[] (void* ptr, std::size_t sz) noexcept {
-  std::printf( "operator delete2[] for addr %x\n", ptr);    
+  std::printf( "operator delete2[] for addr %p\n", ptr);    
   return std::free(ptr);
 }
 

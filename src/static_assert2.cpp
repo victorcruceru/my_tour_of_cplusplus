@@ -24,7 +24,9 @@ struct Record { // struct is just a class with all members public
 
 int main(){
   //Record<std::string, 0> failed_rec; // This fails at compile time
-  Record<int, 10> ok_rec;            // This is OK.
+  Record<int, 10> ok_rec;              // This is OK.
+  ok_rec = {{1,2,3}};
+  
   // Next two might fail or not at compile time depending on your machine
   static_assert(sizeof(int) == 4, "int type must be of size 4");
   static_assert(sizeof(int* ) == 8, "int* pointer type must be of size 8");

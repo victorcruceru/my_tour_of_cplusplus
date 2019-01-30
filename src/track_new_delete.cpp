@@ -45,7 +45,7 @@ int main(){
   ::delete x1;
   ::delete x2;
   ::delete [] x3;
-  //::delete d;  commented to generate a "leak"
+  ::delete d;  //comment this line to generate a "leak"
   ::delete [] d_array;
 
   std::cout << "::new counter = " << AllocHelper::get_new_count() 

@@ -33,7 +33,7 @@ int main(){
   std::cout << convert_to_string(false) << std::endl;
   std::cout << convert_to_string('c') << std::endl;
   std::cout << convert_to_string(std::string("c")) << std::endl;
-  enum class En {} e;
+  // enum class En {} e;
   // Next two will fail to instantiate the template properly...
   //std::cout << convert_to_string(e) << std::endl;
   //std::cout << convert_to_string(L"A string literal") << std::endl;

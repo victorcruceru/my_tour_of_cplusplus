@@ -133,7 +133,7 @@ class AllocHelper{
     // Deallocation helper. Second parameter is used as a message for debugging
     static void deallocate_h(void* ptr, const char* msg){
       if (AllocHelper::do_trace){
-        std::printf("DEBUG: %s: Deallocating  address 0x%x\n", msg, ptr);
+        std::printf("DEBUG: %s: Deallocating  address 0x%p\n", msg, ptr);
       }
       std::map<void*, std::size_t>::iterator m_it =  
                                     AllocHelper::addr_map.find(ptr);
@@ -143,7 +143,7 @@ class AllocHelper{
         AllocHelper::addr_map.erase(m_it);
         std::free(ptr);
       } else {
-        std::printf ("DEBUG: %s: Address 0x%x not recorded.\n", msg, ptr);        
+        std::printf ("DEBUG: %s: Address 0x%p not recorded.\n", msg, ptr);        
       }
     }
 };
@@ -162,7 +162,7 @@ inline void* operator new[](std::size_t sz){
 
 // replacing (overloading)  global delete operator
 inline void operator delete (void* ptr) noexcept{
-  //std::printf( "operator delete for addr 0x%x\n", ptr);    
+  //std::printf( "operator delete for addr 0x%p\n", ptr);    
   return AllocHelper::deallocate_h(ptr, "::delete");
 }
 
@@ -171,7 +171,7 @@ inline void operator delete (void* ptr) noexcept{
 // X *ptr = new X;
 // delete ptr;
 inline void operator delete (void* ptr, std::size_t sz) noexcept{
-  //std::printf( "operator delete for addr 0x%x, size %zu\n", ptr, sz);    
+  //std::printf( "operator delete for addr 0x%p, size %zu\n", ptr, sz);    
   return AllocHelper::deallocate_h(ptr, "::delete");
 }
 
@@ -180,12 +180,12 @@ inline void operator delete (void* ptr, std::size_t sz) noexcept{
 // X* arr = new X[10];
 // delete arr; 
 inline void operator delete[](void* ptr) noexcept{
-  //std::printf( "operator delete[] for addr. %x\n", ptr);    
+  //std::printf( "operator delete[] for addr. %p\n", ptr);    
   return AllocHelper::deallocate_h(ptr, "::delete[]");
 }
 
 // replacing (overloading) global delete operator
 inline void operator delete[](void* ptr, std::size_t sz) noexcept{
-  //std::printf( "operator delete[] for addr 0x%x, size %zu\n", ptr, sz);      
+  //std::printf( "operator delete[] for addr 0x%p, size %zu\n", ptr, sz);      
   return AllocHelper::deallocate_h(ptr, "::delete[]");
 }
