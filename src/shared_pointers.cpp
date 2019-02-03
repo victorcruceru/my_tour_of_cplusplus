@@ -101,9 +101,19 @@ class Poem{
 
 static
 void pass_by_value_func(std::shared_ptr<Poem> sp){
-  std::cout<< __func__ <<  sp->get_author() << ": " 
-             << sp->get_title() << " verses count = " 
-             << sp->get_lyrics().size() << std::endl;
+  std::cout << __func__ << ": " << sp->get_author() << ": " 
+            << sp->get_title() << " verses count = " 
+            << sp->get_lyrics().size() 
+            << " use count = " << sp.use_count() << std::endl;
+
+}
+
+static
+void pass_by_ref_func(std::shared_ptr<Poem>& sp){
+  std::cout << __func__ << ": " << sp->get_author() << ": " 
+            << sp->get_title() << " verses count = " 
+            << sp->get_lyrics().size() 
+            << " use count = " << sp.use_count() << std::endl;
 
 }
 
@@ -149,8 +159,16 @@ int main(){
   for (auto& verse: sp3->get_lyrics()){
     std::cout << "\t" << verse << std::endl;
   }           
-
+  
+  std::cout << "[Before passing by value] use_count = " << sp3.use_count() << std::endl;
   pass_by_value_func(sp3);
+  std::cout << "[After passing by value] use_count = " << sp3.use_count() << std::endl;
+
+
+  std::cout << "[Before passing by reference] use_count = " << sp3.use_count() << std::endl;
+  pass_by_ref_func(sp3);
+  std::cout << "[After passing by reference] use_count = " << sp3.use_count() << std::endl;
+
 
   std::cout << "--->Shared pointer for Hugo #2...." << std::endl;
    
