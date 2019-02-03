@@ -99,11 +99,15 @@ class Poem{
 
 };
 
+static
+void pass_by_value_func(std::shared_ptr<Poem> sp){
+  std::cout<< __func__ <<  sp->get_author() << ": " 
+             << sp->get_title() << " verses count = " 
+             << sp->get_lyrics().size() << std::endl;
+
+}
+
 int main(){
-#if not defined(_WIN32)
-  std::locale::global(std::locale("en_US.utf8"));
-  std::cout.imbue(std::locale());
-#endif
 
   Poem p1 {
     u8"Venus and Adonis",
@@ -146,6 +150,8 @@ int main(){
     std::cout << "\t" << verse << std::endl;
   }           
 
+  pass_by_value_func(sp3);
+
   std::cout << "--->Shared pointer for Hugo #2...." << std::endl;
    
   std::shared_ptr<Poem> sp4 {
@@ -164,6 +170,9 @@ int main(){
   };
 
   assert(sp4.use_count() == 1);
+
+
+
   auto sp4_copy1 = sp4;
   assert(sp4.use_count() == 2);
   auto sp4_copy2 = sp4;
@@ -171,6 +180,7 @@ int main(){
   sp4_copy2.reset();
 
   
+
   std::cout << "--->Shared pointer for an int...." << std::endl;
   std::shared_ptr<int> ptr(new int);
   assert(ptr.use_count() == 1);
