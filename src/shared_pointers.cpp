@@ -16,6 +16,10 @@
 #include <string>
 #include <cassert>
 #include <memory> // std::make_shared
+#include <locale>
+
+#include <io.h>
+#include <fcntl.h>
 
 class Poem{
   public:
@@ -28,21 +32,21 @@ class Poem{
 
   public:
     Poem(){
-      std::wcout << "Calling *Default* Constuctor" <<  std::hex 
+      std::wcout << "Calling *Default* Constructor" <<  std::hex 
                  << ", this = " << this << std::endl;
     }
 
     Poem(const std::wstring& title, const std::wstring& author, 
          const lyrics_t& lyrics): 
         title_{title}, author_{author}, lyrics_{lyrics}{
-      std::wcout << "Calling Constuctor for: " << title <<", " << author
+      std::wcout << "Calling Constructor for: " << title <<", " << author
                  <<  std::hex << ", this = " << this << std::endl;
 
     } 
      
     Poem(const Poem& other): title_{other.title_}, author_{other.author_}, \
                               lyrics_{other.lyrics_} {
-      std::wcout << "Calling *Copy* Constuctor" <<  std::hex 
+      std::wcout << "Calling *Copy* Constructor" <<  std::hex 
                  << ", this = " << this << std::endl;
 
     } 
@@ -51,14 +55,14 @@ class Poem{
       title_{std::move(other.title_)}, 
       author_{std::move(other.author_)}, 
       lyrics_{std::move(other.lyrics_)}  {
-      std::wcout << "Calling *Move* Constuctor" <<  std::hex 
+      std::wcout << "Calling *Move* Constructor" <<  std::hex 
                  << ", this = " << this << std::endl;
      
     } 
 
 
     Poem& operator=(const Poem& other){
-      std::wcout << "Calling asignment operator" << std::hex 
+      std::wcout << "Calling assignment operator" << std::hex 
                  << ", this = " << this << std::endl;
       title_ = other.title_;
       author_ = other.author_;
@@ -67,7 +71,7 @@ class Poem{
     } 
 
     Poem& operator=(Poem&& other){
-      std::wcout << "Calling *move* asignment operator" <<  std::hex 
+      std::wcout << "Calling *move* assignment operator" <<  std::hex 
                  << ", this = " << this << std::endl;
       title_ = std::move(other.title_);
       author_ = std::move(other.author_);
@@ -80,13 +84,35 @@ class Poem{
                  << std::hex << ", this = " << this << std::endl;
     } 
     
+    const std::wstring& get_title(void) const{
+      return this->title_;
+    }
+
+    const std::wstring& get_author(void) const{
+      return this->author_;
+    }  
+
+    const lyrics_t& get_lyrics(void) const {
+      return this->lyrics_;
+    }
+
+    void set_author(const std::wstring& author){
+      this->author_= author;
+    }
+
 };
 
 int main(){
+  //std::locale::global(std::locale("en_US.utf8"));
+  //std::wcout.imbue(std::locale());
+
+  
+  
+  //_setmode(_fileno(stdout), _O_U16TEXT);
 
   Poem p1 {
-    L"William Shakespeare", 
     L"Venus and Adonis",
+    L"William Shakespeare",    
     {
       L"EVEN as the sun with purple-colour'd face", 
       L"Had ta'en his last leave of the weeping morn,"
@@ -99,38 +125,67 @@ int main(){
 
   auto sp1 = std::make_shared<Poem>(p1);  // Copy Constructor will be called
 
-
+  
+  std::wcout << "--->Empty Shared pointer ..." << std::endl;
   auto sp2 = std::make_shared<Poem>();    // Default Constructor will be called
   
+  std::wcout << "--->Shared pointer for Hugo #1...." << std::endl;
   auto sp3 = std::make_shared<Poem>(
-      L"William Shakespeare", 
-      L"Venus and Adonis",
+      L"LA CONSCIENCE",
+      L"Victor Hugo",       
       Poem::lyrics_t {
-        L"EVEN as the sun with purple-colour'd face", 
-        L"Had ta'en his last leave of the weeping morn,",
-        L"...."
+        L"Lorsque avec ses enfants vêtus de peaux de bêtes,", 
+        L"Échevelé, livide au milieu des tempêtes,",
+        L"Caïn se fut enfui de devant Jéhovah,",
+        L"....",
+        //L"Comme le soir tombait, l’homme sombre arriva",
+        //L"Au bas d’une montagne en une grande plaine ;"
       }      
   );
 
-  Poem* poem4 = new Poem(
-      L"William Shakespeare", 
-      L"Venus and Adonis",
+  sp3->set_author(L"'" + sp3->get_author() + L"'");
+  std::wcout << "DEBUG/ sp3 Poem: "<< sp3->get_author() << ": " 
+             << sp3->get_title() << " verses count = " 
+             << sp3->get_lyrics().size() << std::endl;
+
+  for (auto& verse: sp3->get_lyrics()){
+    std::wcout << "\t" << verse << std::endl;
+  }           
+
+  std::wcout << "--->Shared pointer for Hugo #2...." << std::endl;
+   
+  std::shared_ptr<Poem> sp4 {
+    new Poem(
+      L"PUISSANCE ÉGALE BONTÉ",      
+      L"Victor Hugo", 
+      
       Poem::lyrics_t {
-        L"EVEN as the sun with purple-colour'd face", 
-        L"Had ta'en his last leave of the weeping morn,",
-        L"...."
-      }
-   );
+        L"Au commencement, Dieu vit un jour dans l’espace", 
+        L"Iblis venir à lui ; Dieu dit : « Veux-tu ta grâce ?",
+        L"— Non, dit le Mal. — Alors que me demandes-tu ?",
+        L"— Dieu, répondit Iblis de ténèbres vêtu,",
+        L"Joutons à qui créera la chose la plus belle."
+      }  
+    )
+  };
+
+  assert(sp4.use_count() == 1);
+  auto sp4_copy1 = sp4;
+  assert(sp4.use_count() == 2);
+  auto sp4_copy2 = sp4;
+  assert(sp4.use_count() == 3);
+  sp4_copy2.reset();
 
   
-  auto sp4 = std::make_shared<Poem>( *poem4 );
-  
-  std::wcout << sp4.use_count() << std::endl;
-  
-  
-  
-  //sp3 = sp2;
-
+  std::wcout << "--->Shared pointer for an int...." << std::endl;
+  std::shared_ptr<int> ptr(new int);
+  assert(ptr.use_count() == 1);
+  std::shared_ptr<int> ptr_copy = ptr;
+  assert(ptr.use_count() == 2);
+  *ptr_copy = 10777;
+  std::wcout << *ptr << std::endl;
+  ptr.reset();
+  assert(ptr.use_count() == 0);
 
   return (EXIT_SUCCESS);
 }
