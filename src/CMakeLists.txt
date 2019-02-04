@@ -23,3 +23,5 @@ add_executable(user_defined_literals  user_defined_literals.cpp)
 
 add_executable(shared_pointers  shared_pointers.cpp)
 
+add_executable(weak_pointers  weak_pointers.cpp)
+
