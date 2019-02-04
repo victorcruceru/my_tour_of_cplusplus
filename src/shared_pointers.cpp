@@ -17,12 +17,15 @@
 #include <cassert>
 #include <memory> // std::make_shared
 #include <locale>
+#include <algorithm> // std::remove_if
 
 class Poem{
   public:
+    // type used for lyrics (verses)
     using lyrics_t = std::vector<std::string>;
 
   private:
+    // All texts will be encoded as UTF2
     std::string title_ = u8"";
     std::string author_ = u8"";
     lyrics_t lyrics_ = {};
@@ -97,8 +100,13 @@ class Poem{
       this->author_= author;
     }
 
+    void set_title(const std::string& title){
+      this->title_= title;
+    }
 };
 
+// A function to demonstrate how to pass a shared_ptr by value
+// This will increase the use_count by 1 
 static
 void pass_by_value_func(std::shared_ptr<Poem> sp){
   std::cout << __func__ << ": " << sp->get_author() << ": " 
@@ -108,6 +116,9 @@ void pass_by_value_func(std::shared_ptr<Poem> sp){
 
 }
 
+// A function to demonstrate how to pass a shared_ptr by reference
+// This will not change the use_count.
+// Same for cont ref.
 static
 void pass_by_ref_func(std::shared_ptr<Poem>& sp){
   std::cout << __func__ << ": " << sp->get_author() << ": " 
@@ -118,7 +129,7 @@ void pass_by_ref_func(std::shared_ptr<Poem>& sp){
 }
 
 int main(){
-
+  // p1 is a regular object created by constructor
   Poem p1 {
     u8"Venus and Adonis",
     u8"William Shakespeare",    
@@ -160,14 +171,18 @@ int main(){
     std::cout << "\t" << verse << std::endl;
   }           
   
-  std::cout << "[Before passing by value] use_count = " << sp3.use_count() << std::endl;
+  std::cout << "[Before passing by value] use_count = " << sp3.use_count() 
+            << std::endl;
   pass_by_value_func(sp3);
-  std::cout << "[After passing by value] use_count = " << sp3.use_count() << std::endl;
+  std::cout << "[After passing by value] use_count = " << sp3.use_count() 
+            << std::endl;
 
 
-  std::cout << "[Before passing by reference] use_count = " << sp3.use_count() << std::endl;
+  std::cout << "[Before passing by reference] use_count = " << sp3.use_count() 
+            << std::endl;
   pass_by_ref_func(sp3);
-  std::cout << "[After passing by reference] use_count = " << sp3.use_count() << std::endl;
+  std::cout << "[After passing by reference] use_count = " << sp3.use_count() 
+            << std::endl;
 
 
   std::cout << "--->Shared pointer for Hugo #2...." << std::endl;
@@ -190,14 +205,49 @@ int main(){
   assert(sp4.use_count() == 1);
 
 
-
+  // copying shared pointer will increase the use count.  
   auto sp4_copy1 = sp4;
   assert(sp4.use_count() == 2);
   auto sp4_copy2 = sp4;
   assert(sp4.use_count() == 3);
+  // reset decrements it
   sp4_copy2.reset();
+  assert(sp4.use_count() == 2);
 
-  
+
+  // vector of shared pointers
+  // initializing the vector will increase the use count for each shared
+  // pointer used
+  std::vector<std::shared_ptr<Poem>> poem_vector = {sp1, sp2, sp3, sp4};
+  std::cout << "---> Vector of poems:" << std::endl;
+  for (const auto& poem: poem_vector){
+    std::cout << poem->get_author() << ": " 
+              << poem->get_title() << " verses count = " 
+              << poem->get_lyrics().size() 
+              << " use count = " << poem.use_count() << std::endl;
+
+  }
+
+  // remove poems without title from vector (sp2 in this case)
+  poem_vector.erase(
+    std::remove_if(
+      poem_vector.begin(), 
+      poem_vector.end(),
+      [] (std::shared_ptr<Poem> poem) {
+            return (poem->get_author()).empty();		
+      }
+    ),
+    poem_vector.end()
+  );
+   
+
+  std::cout << "---> Cleared Vector of poems:" << std::endl;
+  for (const auto& poem: poem_vector){
+    std::cout << poem->get_author() << ": " 
+              << poem->get_title() << " verses count = " 
+              << poem->get_lyrics().size() 
+              << " use count = " << poem.use_count() << std::endl;
+  }
 
   std::cout << "--->Shared pointer for an int...." << std::endl;
   std::shared_ptr<int> ptr(new int);
@@ -208,6 +258,7 @@ int main(){
   std::cout << *ptr << std::endl;
   ptr.reset();
   assert(ptr.use_count() == 0);
+
 
   return (EXIT_SUCCESS);
 }
