@@ -8,7 +8,9 @@
  */
 
 /*
- * Description: std::weak_ptr examples
+ * Description: Mainly this is about std::weak_ptr. It covers the relationship
+ * weak_ptr <-> shared_ptr (how to lock an weak_ptr to get the shared_ptr).
+ * The example implements a Directed Graph and the BFS traversal. 
  */ 
 
 
@@ -22,11 +24,12 @@
 #include <queue>
 #include <set>
 
-
+// A node in a Directed Graph 
 class DGNode{
   private:
-    std::string name_ = "";
-    std::vector<std::weak_ptr<DGNode>> neighbors_ = {};
+    std::string name_ = ""; // the label (name) of the node
+    std::vector<std::weak_ptr<DGNode>> neighbors_ = {}; // list of adjacent 
+                                                  // nodes to the current node  
 
   public:  
     DGNode(){
@@ -42,7 +45,8 @@ class DGNode{
       std::cout << "DEBUG: "<< __func__ <<" destructor  called for node: "
                 << name_ << std::endl; 
     }
-
+    
+    // Getters
     const std::string& get_name(void) const{
       return (this->name_);
     }
@@ -50,7 +54,10 @@ class DGNode{
     const std::vector<std::weak_ptr<DGNode>>& get_neighbors(void) const{
       return (this->neighbors_);
     }
-
+    
+    // Add new_node as an adjacent node to the current one
+    // Nodes are identified by names (labels).
+    // If new_node already in the adjacency list then it is silently discarded
     void add_neighbor(const std::shared_ptr<DGNode>& new_node){
 
       auto result_iter = std::find_if(
@@ -76,20 +83,25 @@ class DGNode{
       }
 
     }
-
+    
+    // Add a list of nodes as adjacent nodes to the current mode
     void add_neighbor(const std::initializer_list<std::shared_ptr<DGNode>>& 
                       new_nodes){
       for (const auto& node: new_nodes) {
         this->add_neighbor(node);
       }
     }  
-     
+
+    // Method used for visiting  the current node 
     virtual 
     void visit(void){
       std::cout << "VISITing node named '" << name_ << "'" << std::endl;
     }
 };
 
+// BFS (Breadth First Search) traversal.
+// It uses a queue to keep the list of nodes to be visited
+// and a std::set of keep track of the nodes already visited. 
 static 
 void BFS_traversal(const std::shared_ptr<DGNode>& start_node){
   std::cout << " ---> BFS traversal starting with node named '" 
