@@ -133,7 +133,7 @@ int main(){
 
   n1->add_neighbor(n2);
   n2->add_neighbor({n1, n2, n3});
-  nx->add_neighbor({n1, n3}); 
+  nx->add_neighbor({n1, n3, n3, n1}); 
 
   BFS_traversal(n1);
 
