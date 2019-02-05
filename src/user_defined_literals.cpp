@@ -29,8 +29,8 @@ int main(){
   // C++14 - std::string literals are hidden into the namespace 
   // std::string_literals
   using namespace std::string_literals;
-  std::cout << "mumu"s << std::endl;
-  std::wcout << L"Édith Piaf"s << std::endl;
+  std::cout << "Bjarne Stroustrup"s << std::endl;
+  std::cout << "Édith Piaf"s << std::endl;
   
   // built in binary numeric literals
   std::cout << 0b1111 + 0b00001010 << std::endl;
