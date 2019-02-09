@@ -39,7 +39,7 @@ class BaseShape {
 
 class Triangle: public BaseShape{  
   private:
-     double side_a_ = 0;
+    double side_a_ = 0;
     double side_b_ = 0;
     double side_c_ = 0;
  
@@ -171,7 +171,7 @@ int main(){
   // vec.push_back(triangle);
   // vec.push_back(square)
 
-  // Next two lines work - triangle and square are moved into temp variables
+  // Next two lines work - triangle or/ and square are moved into temp variables
   // of type unique_ptr which in tun are saved into the container
   vec.push_back(std::move(triangle));
   //vec.push_back(std::move(square));
