@@ -10,7 +10,7 @@
 /*
  * Description: Mainly this is about std::weak_ptr. It covers the relationship
  * weak_ptr <-> shared_ptr (how to lock an weak_ptr to get the shared_ptr).
- * The example implements a Directed Graph and the BFS traversal. 
+ * The example implements a Directed Graph and the BFS traversal as well.
  */ 
 
 
