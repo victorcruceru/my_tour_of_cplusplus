@@ -15,16 +15,18 @@
  *  - Base is templatized on Derived, hence at compile time
  *    Base knows each derived type
  *  - The trick is done into the do_stuff method of the base class
- *    where this pointer is casted to Derived type
+ *    where this pointer is casted to Derived type then using this pointer
+ *    the "virtual" method is called.
  */
 
 template <typename Derived>
 class Base {
 public:
-  /* This will be "overridden" at compile time*/  
+  /* This method will be "overridden" at compile time */  
   void pseudo_virtual_method(void){
     std::cout << "*Base* implementation" << std::endl;
   }
+  /* Method which will be called from Derived instances */
   void do_stuff(void){
     static_cast<Derived* >(this)->pseudo_virtual_method();
   }
@@ -44,6 +46,7 @@ class Derived_2: public Base<Derived_2>{
     }    
 };
 
+
 class Derived_empty: public Base<Derived_empty>
 {
  // pseudo_virtual_method is not "overridden" here - hence the Base version 
@@ -56,6 +59,9 @@ int main(){
 
     Derived_2 d2;
     d2.do_stuff();
+
+    /* Base can't be constructed directly - it needs a derived class! */
+    // Base b;
 
     Derived_empty de;
     de.do_stuff();
