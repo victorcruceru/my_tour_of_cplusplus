@@ -55,7 +55,8 @@ int main(){
 
   
   while(!intStackStack.empty()){
-    std::cout<< intStackStack.top().height() << '\n';
+    std::cout << intStackStack.top().height() << " : " 
+              << intStackStack.top() <<  '\n';
     intStackStack.pop();
   }  
 

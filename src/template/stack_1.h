@@ -15,6 +15,7 @@
 #pragma once
 
 #include <vector>
+#include<iostream>
 #include <cassert>
 
 template <typename T>
@@ -44,10 +45,24 @@ class Stack{
     }
 
     std::size_t height() const;
+
+    // friend (non-member) function declaration
+    template<typename P>
+    friend std::ostream& operator<< (std::ostream&, Stack<P> const&);    
 };
 
-// outside of the class definition
+// outside of the class member fuction definition
 template <typename T>
 std::size_t Stack<T>::height() const {
   return _elements.size();
 } 
+
+
+// friend (non-member) function definition
+template<typename P>
+std::ostream& operator<< (std::ostream& os, Stack<P> const& s){
+  for(const auto& v: s._elements){
+    os << v << ' ';
+  }
+  return (os);
+}    
