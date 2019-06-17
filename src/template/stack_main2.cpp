@@ -1,4 +1,3 @@
-#include "stack_string_specialization.h"
 /*
  * ----------------------------------------------------------------------------
  * "THE BEER-WARE LICENSE" (Revision 42):
@@ -7,61 +6,36 @@
  * this stuff is worth it, you can buy me a beer in return.
  * ----------------------------------------------------------------------------
  */
-/* 
- Inspied by an example from the book:
- C++ Templates 
- The Complete Guide 
- Second Edition 
- */
-
+#include "stack_2.h"
 #include <iostream>
-#include <utility>
-#include <cstdlib>
-
+#include <string>
 
 int main(){
+  Stack<int,40> int40Stack;
+  Stack<std::string,7> string7Stack;
+  for (std:: size_t i = 0 ; i < 45 and int40Stack.push(i); i++){
+  }
+  std::cout << int40Stack << "\n";
+  while (! int40Stack.empty()){
+    int40Stack.pop();
+  }
+  std::cout << int40Stack << "\n";
 
+  string7Stack.push("item0");
+  string7Stack.push("item1");
+  string7Stack.push("item2");
 
-  Stack<std::string>  stack_of_strings;
-  const char* strings[] = {"one", "two", "three", "four", "five"};
-  for (const auto& s: strings){
-    stack_of_strings.push(s);
+  std::cout << string7Stack  << "\n";
+
+  while (! string7Stack.empty()){
+    auto top_el = string7Stack.top();
+    std::cout <<"Popping up: " << top_el.value_or("<empty stack>") << "\n";
+    string7Stack.pop(); 
   }
 
-  std::cout << stack_of_strings.height() << "\n"; // prints 5
+  assert(string7Stack.empty());
 
-  // next does not compile, because there is no operator <<
-  // for Stack<std::string>
-#if 0
-    std::cout << stack_of_strings << "\n"; 
-#endif  
-
-  Stack<std::pair<int,std::string>> stack_of_pairs;
-  auto idx = 0;
-  for (const auto& s: strings){
-    stack_of_pairs.push(std::make_pair(idx, s));
-    idx++;
-  }
-  
-  std::cout << stack_of_pairs.height() << "\n"; // prints 5 as well
-  
-  // Next does not compile because std::pair
-  // does not have a << operator
-#if 0
-  std::cout << stack_of_pairs << "\n";
-#endif
-  
-  while(!stack_of_pairs.empty()){
-    const auto& x = stack_of_pairs.top();
-    std::cout << x.first << ", " << x.second << "\n";
-    stack_of_pairs.pop();
-  }
-// prints: 
-// 4, five
-// 3, four
-// 2, three
-// 1, two
-// 0, one
-
-  return (EXIT_SUCCESS);
+  std::cout << "\n" << string7Stack.top().value_or("<empty stack>") << "\n";
+  std::cout << string7Stack << "\n";
+  return(EXIT_SUCCESS);
 }
