@@ -1,3 +1,11 @@
+/*
+ * ----------------------------------------------------------------------------
+ * "THE BEER-WARE LICENSE" (Revision 42):
+ * Victor Cruceru wrote this file. As long as you retain this notice you
+ * can do whatever you want with this stuff. If we meet some day, and you think
+ * this stuff is worth it, you can buy me a beer in return.
+ * ----------------------------------------------------------------------------
+ */
 #include <string>
 #include <iostream>
 #include <iterator>
@@ -18,4 +26,5 @@ int main() {
 
     std::copy(a4.cbegin(), a4.cend(),
             std::ostream_iterator<double>(std::cout, ";") ); 
+    std::cout<<"\n";        
 }
