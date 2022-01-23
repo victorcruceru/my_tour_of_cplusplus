@@ -2,3 +2,5 @@
 *.json
 */CMakeFiles/*
 *.vscode/*
+.cache/*
+nohup.out
